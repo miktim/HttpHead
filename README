@@ -3,7 +3,8 @@
 Release notes:
   - the header names (keys) ara case-insensitive;
   - multiple values are stored on a comma separated string;
-  - the HTTP request/status line is accessed using constants.
+  - the HTTP request/status line is accessed using constants;
+  - dist/ contains compressed Java 7 jar file.
 
 package org.miktim;
 
@@ -21,6 +22,7 @@ Overview:
       HttpHeaders set(String key, String value); // create or overwrite header value
       HttpHeaders add(String key, String value); // add comma separated value or create header
       String get(String key);
+      String remove(String key); //
       boolean containsKey(String key);
       Set<String> keySet(); // returns set of header names without request/status line
       HttpHeaders read(InputStream is) throws IOException;

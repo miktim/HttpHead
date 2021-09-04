@@ -50,6 +50,10 @@ public class HttpHeaders {
     public String get(String key) {
         return headers.get(key);
     }
+    
+    public String remove(String key) {
+        return headers.remove(key);
+    }
 
     public boolean containsKey(String key) {
         return headers.containsKey(key);
