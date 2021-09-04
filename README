@@ -5,6 +5,8 @@ Release notes:
   - multiple values are stored on a comma separated string;
   - the HTTP request/status line is accessed using constants.
 
+package org.miktim;
+
 Overview:
 
   Class HttpHeaders;
