@@ -1,0 +1,28 @@
+# Java SE 7+ HttpHeaders. Read/write/store http headers. MIT (c) 2020-2021 miktim@mail.ru
+
+Release notes:
+  - the header names (keys) ara case-insensitive;
+  - multiple values are stored on a comma separated string;
+  - the HTTP request/status line is accessed using constants.
+
+Overview:
+
+  Class HttpHeaders;
+    Constructor:
+      HttpHeaders();
+      
+    Constants:
+      static String REQUEST_LINE; // 
+      static String STATUS_LINE = REQUEST_LINE; //
+      
+    Methods:
+      HttpHeaders set(String key, String value); // create or overwrite header value
+      HttpHeaders add(String key, String value); // add comma separated value or create header
+      String get(String key);
+      boolean containsKey(String key);
+      Set<String> keySet(); // returns set of header names without request/status line
+      HttpHeaders read(InputStream is) throws IOException;
+      void write(OutputStream os) throws IOException; // !set request/status line before writing
+
+Usage:
+  See WebSocket package WsConnection class handshakeClient, handshakeServer methods.
