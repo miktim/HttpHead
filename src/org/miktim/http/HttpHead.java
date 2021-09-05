@@ -8,7 +8,7 @@
  *
  * Created: 2020-11-19
  */
-package org.miktim;
+package org.miktim.http;
 
 import java.io.BufferedReader;
 import java.io.IOException;

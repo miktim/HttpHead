@@ -6,7 +6,7 @@ Release notes:
   - the HTTP request/status line is accessed using constants;
   - dist/ contains compressed Java 7 jar file.
 
-package org.miktim;
+package org.miktim.http;
 
 Overview:
 
