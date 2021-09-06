@@ -4,7 +4,7 @@
  * Notes:
  *  - the header names (keys) ara case-insensitive;
  *  - multiple values are stored on a comma separated string;
- *  - the HTTP request/status line is accessed using constants.
+ *  - the HTTP request/status line is accessed using START_LINE constant.
  *
  * Created: 2020-11-19
  */
@@ -23,12 +23,17 @@ import java.util.TreeMap;
 
 public class HttpHead {
 
-    public static final String REQUEST_LINE = "request-or-status-line";
-    public static final String STATUS_LINE = REQUEST_LINE;
+    public static final String START_LINE = "http-message-head-start-line";
+//    public static final String REQUEST_LINE = START_LINE;
+//    public static final String STATUS_LINE = START_LINE;
 
     private final TreeMap<String, String> head = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-    
+
     public HttpHead() {
+    }
+
+    public HttpHead(Map<String, String> m) {
+        head.putAll(m);
     }
 
 // Create or overwrite header value 
@@ -47,7 +52,7 @@ public class HttpHead {
         }
         return this;
     }
-    
+
     public String remove(String key) {
         return head.remove(key);
     }
@@ -63,11 +68,11 @@ public class HttpHead {
 // Returns list of header names    
     public List<String> listNames() {
         List<String> names = new ArrayList<>(head.keySet());
-        names.remove(HttpHead.REQUEST_LINE);
+        names.remove(HttpHead.START_LINE);
         return names;
     }
 
-    public Map<String,String> headMap(){
+    public Map<String, String> headMap() {
         return head;
     }
 
@@ -83,7 +88,7 @@ public class HttpHead {
                 && (parts[0].startsWith("HTTP/") || parts[2].startsWith("HTTP/")))) {
             throw new ProtocolException("Invalid HTTP request or SSL required");
         }
-        set(REQUEST_LINE, line);
+        set(START_LINE, line);
         String key = null;
         while (true) {
             line = br.readLine();
@@ -99,17 +104,17 @@ public class HttpHead {
         }
         return this;
     }
-    
+
     @Override
     public String toString() {
-        StringBuilder sb = (new StringBuilder(head.get(STATUS_LINE))).append("\r\n");
+        StringBuilder sb = (new StringBuilder(head.get(START_LINE))).append("\r\n");
         for (String hn : listNames()) {
             sb.append(hn).append(": ").append(head.get(hn)).append("\r\n");
         }
         sb.append("\r\n");
         return sb.toString();
     }
-    
+
     public void write(OutputStream os) throws IOException {
         os.write(toString().getBytes());
         os.flush();
