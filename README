@@ -25,7 +25,7 @@ Overview:
       String get(String key);
       String remove(String key); // returns header value or null
       boolean containsKey(String key);
-      List<String> listNames(); // returns list of header names
+      List<String> nameList();   // returns list of header names
       Map<String, String> headMap();
       HttpHead read(InputStream is) throws IOException;
       void write(OutputStream os) throws IOException; // !set start-line before writing

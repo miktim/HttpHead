@@ -66,7 +66,7 @@ public class HttpHead {
     }
 
 // Returns list of header names    
-    public List<String> listNames() {
+    public List<String> nameList() {
         List<String> names = new ArrayList<>(head.keySet());
         names.remove(HttpHead.START_LINE);
         return names;
@@ -108,7 +108,7 @@ public class HttpHead {
     @Override
     public String toString() {
         StringBuilder sb = (new StringBuilder(head.get(START_LINE))).append("\r\n");
-        for (String hn : listNames()) {
+        for (String hn : nameList()) {
             sb.append(hn).append(": ").append(head.get(hn)).append("\r\n");
         }
         sb.append("\r\n");
