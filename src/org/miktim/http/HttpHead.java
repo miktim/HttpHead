@@ -24,8 +24,6 @@ import java.util.TreeMap;
 public class HttpHead {
 
     public static final String START_LINE = "http-message-head-start-line";
-//    public static final String REQUEST_LINE = START_LINE;
-//    public static final String STATUS_LINE = START_LINE;
 
     private final TreeMap<String, String> head = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 

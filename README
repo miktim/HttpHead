@@ -1,4 +1,4 @@
-# Java SE 7+ HttpHead. Read/write/store HTTP message head. MIT (c) 2020-2021 miktim@mail.ru
+# Java SE 7+ HttpHead class. Read/write/store HTTP message head. MIT (c) 2020-2021 miktim@mail.ru
 
 Release notes:
   - the header names (keys) ara case-insensitive;
