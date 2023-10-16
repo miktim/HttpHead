@@ -6,6 +6,9 @@
  *  - multiple values are stored on a comma separated string;
  *  - the HTTP request/status line is accessed using START_LINE constant.
  *
+ * 1.1.0
+ * - functions join, setValues, getValues added
+ *
  * Created: 2020-11-19
  */
 package org.miktim.http;
@@ -24,6 +27,17 @@ import java.util.TreeMap;
 public class HttpHead {
 
     public static final String START_LINE = "http-message-head-start-line";
+
+    public static String join(Object[] array, char delimiter) {
+        if (array == null || array.length == 0) {
+            return null;
+        }
+        StringBuilder sb = new StringBuilder();
+        for (Object obj : array) {
+            sb.append(obj).append(delimiter);
+        }
+        return sb.deleteCharAt(sb.length() - 1).toString();
+    }
 
     private final TreeMap<String, String> head = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 
@@ -57,6 +71,22 @@ public class HttpHead {
 
     public String get(String key) {
         return head.get(key);
+    }
+
+    public HttpHead setValues(String key, String[] values) {
+        if (values == null) return this;
+        return set(key, join(values, ','));
+    }
+
+    public String[] getValues(String key) {
+        if (!containsKey(key)) {
+            return null;
+        }
+        String[] values = head.get(key).split(",");
+        for (int i = 0; i < values.length; i++) {
+            values[i] = values[i].trim();
+        }
+        return values;
     }
 
     public boolean containsKey(String key) {

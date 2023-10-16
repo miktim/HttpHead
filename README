@@ -4,8 +4,7 @@ Release notes:
   - the header names (keys) ara case-insensitive;
   - multiple header values are stored on one line, separated by commas;
   - the HTTP message request/status line is accessed using START_LINE constant;
-  - without any data control;
-  - dist/ contains compressed Java 7 jar file.
+  - without any data control.
 
 package org.miktim.http;
 
@@ -20,16 +19,22 @@ Overview:
       static String START_LINE; // key to access the request/status line
       
     Methods:
+      static String join(String[] s, char separator); // join strings with separator
+ 
       HttpHead set(String key, String value); // create or overwrite header value
+      HttpHead setValues(String key, String[] values); 
+      // create or overwrite header with comma separated values
       HttpHead add(String key, String value); // add comma separated value or create header
       String get(String key);
+      String[] getValues(String key); // returns array of comma separated values
       String remove(String key); // returns header value or null
       boolean containsKey(String key);
       List<String> nameList();   // returns list of header names
       Map<String, String> headMap();
       HttpHead read(InputStream is) throws IOException;
       void write(OutputStream os) throws IOException; // !set start-line before writing
-      String toString(); // with a trailing blank line
+      String toString();
+      // creates http header with a request/status line, headers and a trailing blank line
       
 Usage:
   See WebSocket package WsConnection class handshakeClient, handshakeServer methods.
