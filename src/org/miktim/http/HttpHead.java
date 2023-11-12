@@ -13,10 +13,8 @@
  */
 package org.miktim.http;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.ProtocolException;
 import java.util.ArrayList;
@@ -104,10 +102,22 @@ public class HttpHead {
         return head;
     }
 
+    String readHeaderLine(InputStream is) throws IOException {
+        byte[] bb = new byte[1024];
+        int i = 0;
+        int b = is.read();
+        while (b != '\n' && b != -1) {
+            bb[i++] = (byte) b;
+            b = is.read();
+        }
+        if (b == '\n' && bb[i - 1] == '\r') {
+            return new String(bb, 0, i - 1); // header line MUST ended CRLF
+        }
+        throw new ProtocolException();
+    }
+
     public HttpHead read(InputStream is) throws IOException {
-        BufferedReader br = new BufferedReader(
-                new InputStreamReader(is));
-        String line = br.readLine();
+        String line = readHeaderLine(is);
 //        if (line.startsWith("\u0016\u0003\u0003")) {
 //            throw new javax.net.ssl.SSLHandshakeException("Plain socket");
 //        }
@@ -119,7 +129,7 @@ public class HttpHead {
         set(START_LINE, line);
         String key = null;
         while (true) {
-            line = br.readLine();
+            line = readHeaderLine(is);
             if (line == null || line.isEmpty()) {
                 break;
             }
