@@ -1,40 +1,67 @@
-# Java SE 7+ HttpHead class. Read/write/store HTTP message head. MIT (c) 2020-2023 miktim@mail.ru
+HttpHead class. MIT (c) 2020-2025 miktim@mail.ru
+
+Read/write/store HTTP message head.
+HTTP head is a request/status line (start line), header fields (headers)
+and the trailing empty line.
 
 Release notes:
-  - the header names (keys) ara case-insensitive;
-  - multiple header values are stored on one line, separated by commas;
-  - the HTTP message request/status line is accessed using START_LINE constant;
+  - the header names ara case-insensitive;
+  - multiple header values are stored on one line separated by commas;
+  - the following header values are treated as multiple values:
+      Expires: Wed, 01 Jun 2022 08:00:00 GMT
+      Accept-Encoding: gzip, deflate
+      Cache-Control: no-cache, no-store, must-revalidate
+    and so on;
   - without any data control.
 
 package org.miktim.http;
 
 Overview:
 
-  Class HttpHead;
+  Class HttpHead extends TreeMap<String, String>;
+
     Constructors:
       HttpHead();
-      HttpHead(Map<String, String> m);
-      
-    Constants:
-      static String START_LINE; // key to access the request/status line
+      HttpHead(Map<String,String> map); // duplicates head
       
     Methods:
-      static String join(String[] s, char separator); // join strings with separator
- 
-      HttpHead set(String key, String value); // create or overwrite header value
-      HttpHead setValues(String key, String[] values); 
-      // create or overwrite header with comma separated values
-      HttpHead add(String key, String value); // add comma separated value or create header
-      String get(String key);
-      String[] getValues(String key); // returns array of comma separated values
-      String remove(String key); // returns header value or null
-      boolean containsKey(String key);
-      List<String> nameList();   // returns list of header names
-      Map<String, String> headMap();
+      static String join(String[] s, String separator);
+        - joins strings with separator 
+          (the antonym for the Java String.split method)
+
+      HttpHead setStartLine(String line);
+        - sets http request/status line
+      String getStartLine();
+        - returns http start line
+
+      String[] listHeaders();
+        - returns list of header names
+      HttpHead set(String header, String value);
+        - creates or overwrites header value
+      HttpHead add(String header, String value);
+        - creates header or add comma separeted value
+      HttpHead setValues(String header, String[] values);
+        - creates or overwrite header with values
+      String[] listValues(String header);
+        - returns array of header values
+      String get(String header);
+        - inherited;
+        - returns header comma separated values or null
+      String remove(String header);
+        - inherited;
+        - remove header, returns header value or null
+      boolean exists(String header);
+        - checks for the header
+
       HttpHead read(InputStream is) throws IOException;
-      void write(OutputStream os) throws IOException; // !set start-line before writing
+        - reads the http head and trailing blank line
+          from the input stream
+      void write(OutputStream os) throws IOException;
+        - writes http head to the output stream and flushes it. 
+
       String toString();
-      // creates http header with a request/status line, headers and a trailing blank line
+        - returns http header with a start line,
+          headers and a trailing blank line
       
 Usage:
-  See WebSocket package WsConnection class handshakeClient, handshakeServer methods.
+  See WebSocket package WsHandshake class handshakeClient, handshakeServer methods.
